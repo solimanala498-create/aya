@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>💖 لآية عبد المولى - قلب أحمد علي 💖</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="./public/assets/romantic-song.mp3" type="audio/mpeg">
+        <source src="https://www.soundjay.com/misc/sounds/romantic-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Entry Screen -->
+    <div id="entryScreen" class="entry-screen">
+        <div class="hearts-background">
+            <div class="heart heart-1">💖</div>
+            <div class="heart heart-2">💕</div>
+            <div class="heart heart-3">💗</div>
+            <div class="heart heart-4">💝</div>
+            <div class="heart heart-5">💖</div>
+            <div class="heart heart-6">💕</div>
+            <div class="heart heart-7">🌹</div>
+            <div class="heart heart-8">💐</div>
+        </div>
+        
+        <div class="entry-content">
+            <div class="romantic-border">
+                <div class="love-animation">💕</div>
+                <h1 class="entry-title">🌹 ممنوع الدخول 🌹</h1>
+                <p class="entry-subtitle">لغير</p>
+                <h2 class="beloved-name" id="typingName">آية عبد المولى</h2>
+                <p class="heart-owner">قلب أحمد علي 💖</p>
+                <div class="romantic-quote">
+                    <p>"أنتِ الحب الذي يسكن قلبي والحلم الذي يملأ عيني"</p>
+                </div>
+                <button id="enterBtn" class="enter-btn">
+                    <span>ادخلي يا حبيبتي 💕</span>
+                    <div class="btn-hearts">💖💕💗</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content hidden">
+        <div class="floating-hearts">
+            <div class="floating-heart">💖</div>
+            <div class="floating-heart">💕</div>
+            <div class="floating-heart">💗</div>
+            <div class="floating-heart">💝</div>
+            <div class="floating-heart">💖</div>
+            <div class="floating-heart">🌹</div>
+            <div class="floating-heart">💐</div>
+            <div class="floating-heart">✨</div>
+        </div>
+
+        <!-- Romantic Rain Effect -->
+        <div class="romantic-rain"></div>
+
+        <div class="container">
+            <header class="romantic-header">
+                <h1 class="main-title" id="mainTitle">💖 آية عبد المولى 💖</h1>
+                <p class="subtitle">أجمل ما في الوجود</p>
+                <div class="love-counter">
+                    <p>أحبك منذ <span id="loveCounter">0</span> ثانية</p>
+                </div>
+            </header>
+
+            <!-- Interactive Love Messages -->
+            <section class="love-messages">
+                <div class="message-card interactive-card" data-message="1">
+                    <div class="card-icon">🌹</div>
+                    <h3>يا أجمل حبيبة 🌹</h3>
+                    <p>آية، أنتِ النور الذي ينير حياتي، والحب الذي يملأ قلبي بالسعادة. كل نبضة في قلبي تنادي باسمك، وكل نفس أتنفسه يحمل عطر حبك الجميل.</p>
+                    <div class="love-meter">
+                        <div class="love-fill" data-love="100"></div>
+                        <span>مستوى الحب: 100% 💖</span>
+                    </div>
+                </div>
+
+                <div class="message-card interactive-card" data-message="2">
+                    <div class="card-icon">💕</div>
+                    <h3>حبيبة القلب 💕</h3>
+                    <p>أنتِ الحلم الذي تحقق، والأمنية التي استجابت، والسعادة التي لا تنتهي. معك أشعر أنني أملك الدنيا كلها، وأن الحياة أجمل بوجودك بجانبي.</p>
+                    <div class="interactive-hearts">
+                        <span class="clickable-heart">💖</span>
+                        <span class="clickable-heart">💕</span>
+                        <span class="clickable-heart">💗</span>
+                        <span class="clickable-heart">💝</span>
+                    </div>
+                </div>
+
+                <div class="message-card interactive-card" data-message="3">
+                    <div class="card-icon">🌟</div>
+                    <h3>نجمة حياتي 🌟</h3>
+                    <p>آية الحبيبة، أنتِ السبب في ابتسامتي كل صباح، والدفء الذي يحتويني في كل مساء. حبك يجري في عروقي مثل النهر الذي لا ينضب، ويملأ روحي بالحياة.</p>
+                    <button class="love-button" onclick="showLoveExplosion(this)">اضغطي للمفاجأة 💝</button>
+                </div>
+
+                <div class="message-card special-message interactive-card" data-message="4">
+                    <div class="card-icon rotating-heart">💖</div>
+                    <h3>💖 رسالة خاصة من أحمد علي 💖</h3>
+                    <p>آية حبيبتي، هذا الموقع هو هدية صغيرة من قلبي لقلبك. أردت أن أخبرك أنك أهم شيء في حياتي، وأن حبي لك يكبر كل يوم. أنتِ ملكة قلبي وحبيبة روحي إلى الأبد.</p>
+                    <div class="signature">بكل الحب، أحمد علي 💕</div>
+                    <div class="love-poem">
+                        <p class="poem-line">"آية يا أجمل اسم في الوجود"</p>
+                        <p class="poem-line">"أنتِ حبي وأنتِ كل المراد"</p>
+                        <p class="poem-line">"قلبي لك ينبض بلا حدود"</p>
+                        <p class="poem-line">"وحبك في قلبي إلى يوم التناد"</p>
+                    </div>
+                </div>
+
+                <!-- New Interactive Song Card -->
+                <div class="message-card song-card interactive-card">
+                    <div class="card-icon">🎵</div>
+                    <h3>أغنية خاصة لآية عبد المولى 🎵</h3>
+                    <p>أغنية رومانسية مخصصة لك يا حبيبتي، تم تغيير كلماتها خصيصاً لتحمل اسمك الجميل</p>
+                    <div class="song-lyrics">
+                        <p class="lyric-line">"آية عبد المولى يا أجمل حبيبة"</p>
+                        <p class="lyric-line">"أنتِ النور في عيني والحب في قلبي"</p>
+                        <p class="lyric-line">"آية عبد المولى يا روح الروح"</p>
+                        <p class="lyric-line">"معاك الحياة حلوة ومعاك أنا مرتاح"</p>
+                    </div>
+                    <div class="song-controls">
+                        <button id="playPauseBtn" class="song-btn">▶️ تشغيل الأغنية</button>
+                        <div class="volume-control">
+                            <span>🔊</span>
+                            <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Love Game Section -->
+            <section class="love-game">
+                <h3>💕 لعبة الحب 💕</h3>
+                <p>اضغطي على القلوب لتجمعي نقاط الحب!</p>
+                <div class="game-hearts" id="gameHearts"></div>
+                <div class="love-score">نقاط الحب: <span id="loveScore">0</span> 💖</div>
+            </section>
+
+            <div class="music-control">
+                <button id="musicToggle" class="music-btn">🎵 إيقاف الموسيقى</button>
+                <button id="romanticMode" class="music-btn">✨ وضع رومانسي خاص</button>
+            </div>
+
+            <!-- Love Declaration -->
+            <div class="love-declaration">
+                <h2>💖 إعلان حب 💖</h2>
+                <p class="declaration-text">أعلن أمام العالم كله أنني أحب آية عبد المولى بكل قلبي وروحي، وأنها أجمل وأغلى ما في حياتي</p>
+                <button id="shareLove" class="share-btn">شارك الحب 💕</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
