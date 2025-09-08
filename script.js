@@ -393,14 +393,15 @@ function showBlessings() {
     });
 }
 
-// Love explosion effect
+// Love explosion effect - THIS IS THE MISSING FUNCTION!
 function showLoveExplosion(button) {
+    console.log('Love explosion triggered!');
     const hearts = ['💖', '💕', '💗', '💝', '🌹', '💐', '✨'];
     
     for (let i = 0; i < 15; i++) {
         const heart = document.createElement('div');
         heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-        heart.style.position = 'absolute';
+        heart.style.position = 'fixed';
         heart.style.fontSize = '2rem';
         heart.style.pointerEvents = 'none';
         heart.style.zIndex = '1000';
@@ -411,8 +412,8 @@ function showLoveExplosion(button) {
         
         const angle = (i / 15) * 2 * Math.PI;
         const distance = 100 + Math.random() * 100;
-        const endX = rect.left + rect.width / 2 + Math.cos(angle) * distance;
-        const endY = rect.top + rect.height / 2 + Math.sin(angle) * distance;
+        const endX = Math.cos(angle) * distance;
+        const endY = Math.sin(angle) * distance;
         
         heart.style.animation = `explodeHeart 2s ease-out forwards`;
         heart.style.setProperty('--endX', endX + 'px');
@@ -441,7 +442,20 @@ function toggleRomanticMode() {
         // Add extra romantic effects
         for (let i = 0; i < 50; i++) {
             setTimeout(() => {
-                createFloatingHeart();
+                const floatingHearts = document.querySelector('.floating-hearts');
+                if (floatingHearts) {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.textContent = ['💖', '💕', '💗', '💝', '🌹', '💐', '✨'][Math.floor(Math.random() * 7)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    floatingHearts.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 8000);
+                }
             }, i * 100);
         }
     }
@@ -468,59 +482,9 @@ style.textContent = `
         100% { transform: translate(var(--endX, 0), var(--endY, 0)) scale(0); opacity: 0; }
     }
     
-    @keyframes titleShimmer {
-        0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
-        50% { text-shadow: 2px 2px 20px rgba(255, 107, 157, 0.8), 0 0 30px rgba(255, 107, 157, 0.6); }
-    }
-    
-    @keyframes frameGlow {
-        0%, 100% { opacity: 0.7; filter: blur(15px); }
-        50% { opacity: 1; filter: blur(10px); }
-    }
-    
-    @keyframes petalFloat {
-        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-        50% { transform: translateY(-15px) rotate(180deg); opacity: 1; }
-    }
-    
-    @keyframes photoHeartFloat {
-        0%, 100% { transform: translateY(0px) scale(1); }
-        50% { transform: translateY(-10px) scale(1.1); }
-    }
-    
-    @keyframes timerPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-    }
-    
-    @keyframes numberGlow {
-        0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
-        100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.8); }
-    }
-    
-    @keyframes dateIconPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-    }
-    
-    @keyframes subtitleFloat {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-5px); }
-    }
-    
-    @keyframes rotateHeart {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes loveFill {
-        0%, 100% { width: 100%; }
-        50% { width: 80%; }
-    }
-    
-    @keyframes heartBeat {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+    @keyframes rainFall {
+        0% { transform: translateY(-100px); }
+        100% { transform: translateY(100vh); }
     }
     
     .romantic-mode {
@@ -534,3 +498,9 @@ style.textContent = `
 `;
 
 document.head.appendChild(style);
+
+// Make functions globally available
+window.createPhotoMagic = createPhotoMagic;
+window.createHeartRain = createHeartRain;
+window.showBlessings = showBlessings;
+window.showLoveExplosion = showLoveExplosion;
