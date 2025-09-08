@@ -1,510 +1,536 @@
-// Enhanced romantic website with song lyrics modification
+// Main JavaScript file
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Enhanced romantic website loaded for Aya Abdel Mawla 💖');
+    console.log('Document ready!');
     
-    // Get DOM elements
+    // Initialize the romantic website
+    initializeRomanticWebsite();
+});
+
+function initializeRomanticWebsite() {
+    // Entry button functionality
+    const enterBtn = document.getElementById('enterBtn');
     const entryScreen = document.getElementById('entryScreen');
     const mainContent = document.getElementById('mainContent');
-    const enterBtn = document.getElementById('enterBtn');
     const backgroundMusic = document.getElementById('backgroundMusic');
+    
+    if (enterBtn) {
+        enterBtn.addEventListener('click', function() {
+            // Add fade out animation to entry screen
+            entryScreen.classList.add('fade-out');
+            
+            // Play background music
+            if (backgroundMusic) {
+                backgroundMusic.play().catch(e => console.log('Music autoplay prevented'));
+            }
+            
+            // Show main content after animation
+            setTimeout(() => {
+                entryScreen.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                startLoveCounter();
+                startEngagementTimer();
+                initializeFloatingHearts();
+                initializeLoveGame();
+                initializeInteractiveFeatures();
+            }, 1000);
+        });
+    }
+    
+    // Music controls
     const musicToggle = document.getElementById('musicToggle');
     const romanticMode = document.getElementById('romanticMode');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const loveCounter = document.getElementById('loveCounter');
-    const loveScore = document.getElementById('loveScore');
-    const gameHearts = document.getElementById('gameHearts');
-    const shareLove = document.getElementById('shareLove');
     
-    let musicPlaying = false;
-    let romanticModeActive = false;
-    let loveSeconds = 0;
-    let gameScore = 0;
-    
-    // Modified song lyrics with "آية عبد المولى" instead of "ليلى"
-    const modifiedLyrics = [
-        "خطوة ورا خطوة بتمشيها.. دي اللحظة اللي أنا مستنيها",
-        "والأرض اللي بتمشي فوقيها.. مفيش قدك يا حبيبتي عليها",
-        "خطوة ورا خطوة بقرب لك.. جايلك عشان أفرح قلبك",
-        "وعمري اللي كان قبل ما قابلك مش بحسب أيامه من قبلك",
-        "فستانك الأبيض الي هياخد منك حتة",
-        "وعلشان اليوم دة رسمت وعملت أنا مليون خطة",
-        "والناس بتغني والدنيا بتعزف زفة",
-        "والمزيكا تعلى ومعاها تعلى السقفة",
-        "حبيتي وعمري وأميرتي.. يا بكرة الي مددلي إيده",
-        "يا قصري وبيتي وجزيرتي وحلم قدرت أوصل ليه",
-        "وقالوا الشعر عن آية عبد المولى وكاتبوا في سحرها دواوين",
-        "وأنا وآية عبد المولى بقينا لبعض في دنيتنا سوا عايشين.. عايشين"
-    ];
-    
-    // Update song lyrics in the HTML
-    function updateSongLyrics() {
-        const lyricsContainer = document.querySelector('.song-lyrics');
-        if (lyricsContainer) {
-            lyricsContainer.innerHTML = modifiedLyrics.map(line => 
-                `<p class="lyric-line">${line}</p>`
-            ).join('');
-        }
-    }
-    
-    // Entry button click handler
-    enterBtn.addEventListener('click', function() {
-        // Add fade out animation to entry screen
-        entryScreen.classList.add('fade-out');
-        
-        // Play background music after user interaction
-        playBackgroundMusic();
-        
-        // Show main content after animation
-        setTimeout(() => {
-            entryScreen.style.display = 'none';
-            mainContent.classList.remove('hidden');
-            
-            // Add entrance animation to main content
-            mainContent.style.opacity = '0';
-            mainContent.style.transform = 'translateY(50px)';
-            
-            setTimeout(() => {
-                mainContent.style.transition = 'all 1s ease';
-                mainContent.style.opacity = '1';
-                mainContent.style.transform = 'translateY(0)';
-                
-                // Start love counter
-                startLoveCounter();
-                
-                // Initialize love game
-                initializeLoveGame();
-                
-                // Update song lyrics
-                updateSongLyrics();
-                
-            }, 100);
-            
-        }, 1000);
-    });
-    
-    // Background music control
-    function playBackgroundMusic() {
-        backgroundMusic.play().then(() => {
-            musicPlaying = true;
-            updateMusicButton();
-        }).catch(e => {
-            console.log('Audio autoplay prevented, creating alternative melody');
-            createRomanticMelody();
-            musicPlaying = true;
-            updateMusicButton();
-        });
-    }
-    
-    function createRomanticMelody() {
-        // Create a simple romantic melody using Web Audio API
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // Romantic melody notes (frequencies in Hz)
-            const melody = [
-                { freq: 523.25, duration: 0.5 }, // C5
-                { freq: 587.33, duration: 0.5 }, // D5
-                { freq: 659.25, duration: 0.5 }, // E5
-                { freq: 698.46, duration: 0.5 }, // F5
-                { freq: 783.99, duration: 1.0 }, // G5
-                { freq: 659.25, duration: 0.5 }, // E5
-                { freq: 587.33, duration: 0.5 }, // D5
-                { freq: 523.25, duration: 1.0 }, // C5
-            ];
-            
-            let currentTime = audioContext.currentTime;
-            
-            function playMelody() {
-                melody.forEach((note, index) => {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.setValueAtTime(note.freq, currentTime);
-                    oscillator.type = 'sine';
-                    
-                    gainNode.gain.setValueAtTime(0, currentTime);
-                    gainNode.gain.linearRampToValueAtTime(0.1, currentTime + 0.1);
-                    gainNode.gain.linearRampToValueAtTime(0, currentTime + note.duration);
-                    
-                    oscillator.start(currentTime);
-                    oscillator.stop(currentTime + note.duration);
-                    
-                    currentTime += note.duration;
-                });
-                
-                // Repeat melody
-                setTimeout(() => {
-                    if (musicPlaying) {
-                        currentTime = audioContext.currentTime;
-                        playMelody();
-                    }
-                }, currentTime * 1000 - Date.now());
-            }
-            
-            playMelody();
-        } catch (e) {
-            console.log('Web Audio API not supported');
-        }
-    }
-    
-    // Music toggle functionality
     if (musicToggle) {
         musicToggle.addEventListener('click', function() {
-            if (musicPlaying) {
-                backgroundMusic.pause();
-                musicPlaying = false;
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                this.textContent = '🎵 إيقاف الموسيقى';
             } else {
-                playBackgroundMusic();
+                backgroundMusic.pause();
+                this.textContent = '🎵 تشغيل الموسيقى';
             }
-            updateMusicButton();
         });
     }
     
-    function updateMusicButton() {
-        if (musicToggle) {
-            musicToggle.textContent = musicPlaying ? '🎵 إيقاف الموسيقى' : '🎵 تشغيل الموسيقى';
+    if (romanticMode) {
+        romanticMode.addEventListener('click', function() {
+            toggleRomanticMode();
+        });
+    }
+}
+
+// Love counter functionality
+function startLoveCounter() {
+    const loveCounter = document.getElementById('loveCounter');
+    let seconds = 0;
+    
+    setInterval(() => {
+        seconds++;
+        if (loveCounter) {
+            loveCounter.textContent = seconds.toLocaleString();
+        }
+    }, 1000);
+}
+
+// Engagement timer functionality
+function startEngagementTimer() {
+    const engagementDate = new Date('2025-06-23T00:00:00');
+    
+    function updateTimer() {
+        const now = new Date();
+        const timeDiff = now - engagementDate;
+        
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = hours;
+        if (minutesEl) minutesEl.textContent = minutes;
+        if (secondsEl) secondsEl.textContent = seconds;
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+// Initialize floating hearts
+function initializeFloatingHearts() {
+    const floatingHearts = document.querySelector('.floating-hearts');
+    const hearts = ['💖', '💕', '💗', '💝', '🌹', '💐', '✨'];
+    
+    function createFloatingHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        heart.style.animationDelay = Math.random() * 2 + 's';
+        
+        if (floatingHearts) {
+            floatingHearts.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
         }
     }
     
-    // Song control functionality
-    if (playPauseBtn) {
+    // Create hearts periodically
+    setInterval(createFloatingHeart, 2000);
+}
+
+// Love game functionality
+function initializeLoveGame() {
+    const gameHearts = document.getElementById('gameHearts');
+    const loveScore = document.getElementById('loveScore');
+    let score = 0;
+    
+    if (!gameHearts) return;
+    
+    // Create game hearts
+    for (let i = 0; i < 12; i++) {
+        const gameHeart = document.createElement('div');
+        gameHeart.className = 'game-heart';
+        gameHeart.textContent = '💖';
+        gameHeart.addEventListener('click', function() {
+            score += 10;
+            if (loveScore) {
+                loveScore.textContent = score;
+            }
+            
+            // Heart click animation
+            this.style.transform = 'scale(1.3)';
+            this.style.background = 'rgba(255, 107, 157, 0.3)';
+            
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                this.style.background = 'rgba(255, 107, 157, 0.1)';
+            }, 200);
+            
+            // Create floating heart effect
+            createClickHeart(this);
+        });
+        
+        gameHearts.appendChild(gameHeart);
+    }
+}
+
+// Create heart effect on click
+function createClickHeart(element) {
+    const heart = document.createElement('div');
+    heart.textContent = '💕';
+    heart.style.position = 'absolute';
+    heart.style.fontSize = '1.5rem';
+    heart.style.pointerEvents = 'none';
+    heart.style.zIndex = '1000';
+    heart.style.animation = 'floatUp 2s ease-out forwards';
+    
+    const rect = element.getBoundingClientRect();
+    heart.style.left = rect.left + rect.width / 2 + 'px';
+    heart.style.top = rect.top + 'px';
+    
+    document.body.appendChild(heart);
+    
+    setTimeout(() => {
+        heart.remove();
+    }, 2000);
+}
+
+// Interactive features
+function initializeInteractiveFeatures() {
+    // Interactive hearts
+    const clickableHearts = document.querySelectorAll('.clickable-heart');
+    clickableHearts.forEach(heart => {
+        heart.addEventListener('click', function() {
+            this.style.transform = 'scale(1.5)';
+            this.style.filter = 'drop-shadow(0 0 15px rgba(255, 107, 157, 1))';
+            
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                this.style.filter = 'drop-shadow(0 0 10px rgba(255, 107, 157, 0.8))';
+            }, 300);
+            
+            createClickHeart(this);
+        });
+    });
+    
+    // Interactive cards
+    const interactiveCards = document.querySelectorAll('.interactive-card');
+    interactiveCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.background = 'rgba(255, 255, 255, 0.2)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+    });
+    
+    // Photo hearts interaction
+    const photoHearts = document.querySelectorAll('.photo-heart');
+    photoHearts.forEach(heart => {
+        heart.addEventListener('click', function() {
+            this.style.transform = 'scale(1.5)';
+            this.style.filter = 'drop-shadow(0 0 15px rgba(255, 107, 157, 1))';
+            
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                this.style.filter = 'none';
+            }, 500);
+            
+            createClickHeart(this);
+        });
+    });
+    
+    // Main title interaction
+    const mainTitle = document.getElementById('mainTitle');
+    if (mainTitle) {
+        mainTitle.addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'titlePulse 3s ease-in-out infinite';
+            }, 100);
+            
+            // Create multiple hearts
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createClickHeart(this);
+                }, i * 200);
+            }
+        });
+    }
+    
+    // Song controls
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    
+    if (playPauseBtn && backgroundMusic) {
         playPauseBtn.addEventListener('click', function() {
             if (backgroundMusic.paused) {
                 backgroundMusic.play();
-                playPauseBtn.textContent = '⏸️ إيقاف الأغنية';
-                musicPlaying = true;
+                this.textContent = '⏸️ إيقاف الأغنية';
             } else {
                 backgroundMusic.pause();
-                playPauseBtn.textContent = '▶️ تشغيل الأغنية';
-                musicPlaying = false;
+                this.textContent = '▶️ تشغيل الأغنية';
             }
-            updateMusicButton();
         });
     }
     
-    // Volume control
-    if (volumeSlider) {
+    if (volumeSlider && backgroundMusic) {
         volumeSlider.addEventListener('input', function() {
             backgroundMusic.volume = this.value / 100;
         });
-        
-        // Set initial volume
-        backgroundMusic.volume = 0.7;
     }
     
-    // Romantic mode toggle
-    if (romanticMode) {
-        romanticMode.addEventListener('click', function() {
-            romanticModeActive = !romanticModeActive;
-            
-            if (romanticModeActive) {
-                document.body.classList.add('romantic-mode');
-                romanticMode.textContent = '✨ إيقاف الوضع الرومانسي';
-                createSpecialEffects();
-            } else {
-                document.body.classList.remove('romantic-mode');
-                romanticMode.textContent = '✨ وضع رومانسي خاص';
-            }
-        });
-    }
-    
-    // Love counter
-    function startLoveCounter() {
-        setInterval(() => {
-            loveSeconds++;
-            if (loveCounter) {
-                loveCounter.textContent = loveSeconds;
-            }
-        }, 1000);
-    }
-    
-    // Love game initialization
-    function initializeLoveGame() {
-        if (!gameHearts) return;
-        
-        // Create game hearts
-        for (let i = 0; i < 12; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'game-heart';
-            heart.textContent = ['💖', '💕', '💗', '💝'][Math.floor(Math.random() * 4)];
-            heart.addEventListener('click', function() {
-                gameScore += 10;
-                if (loveScore) {
-                    loveScore.textContent = gameScore;
-                }
-                
-                // Add click effect
-                this.style.transform = 'scale(1.5)';
-                this.style.background = 'rgba(255, 107, 157, 0.5)';
-                
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                    this.style.background = 'rgba(255, 107, 157, 0.1)';
-                }, 300);
-                
-                // Create floating score
-                createFloatingScore(this, '+10');
-            });
-            
-            gameHearts.appendChild(heart);
-        }
-    }
-    
-    function createFloatingScore(element, score) {
-        const floatingScore = document.createElement('div');
-        floatingScore.textContent = score;
-        floatingScore.style.position = 'absolute';
-        floatingScore.style.color = '#ff6b9d';
-        floatingScore.style.fontWeight = 'bold';
-        floatingScore.style.fontSize = '1.2rem';
-        floatingScore.style.pointerEvents = 'none';
-        floatingScore.style.animation = 'floatScore 1s ease-out forwards';
-        
-        const rect = element.getBoundingClientRect();
-        floatingScore.style.left = rect.left + 'px';
-        floatingScore.style.top = rect.top + 'px';
-        
-        document.body.appendChild(floatingScore);
-        
-        setTimeout(() => {
-            if (floatingScore.parentNode) {
-                floatingScore.parentNode.removeChild(floatingScore);
-            }
-        }, 1000);
-    }
-    
-    // Share love functionality
+    // Share love button
+    const shareLove = document.getElementById('shareLove');
     if (shareLove) {
         shareLove.addEventListener('click', function() {
-            const loveMessage = `💖 أعلن أمام العالم كله أنني أحب آية عبد المولى بكل قلبي وروحي! 💖\n\nهذا الموقع الرومانسي مخصص لها: ${window.location.href}`;
+            const message = 'أعلن أمام العالم كله أنني أحب آية عبد المولى بكل قلبي وروحي 💖';
             
             if (navigator.share) {
                 navigator.share({
-                    title: '💖 إعلان حب لآية عبد المولى',
-                    text: loveMessage,
+                    title: 'إعلان حب',
+                    text: message,
                     url: window.location.href
                 });
             } else {
-                // Fallback: copy to clipboard
-                navigator.clipboard.writeText(loveMessage).then(() => {
-                    alert('تم نسخ رسالة الحب! يمكنك مشاركتها الآن 💕');
-                });
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(message + ' ' + window.location.href)
+                    .then(() => {
+                        alert('تم نسخ رسالة الحب! 💖');
+                    })
+                    .catch(() => {
+                        alert('رسالة الحب: ' + message);
+                    });
             }
         });
     }
+}
+
+// Photo magic effects
+function createPhotoMagic() {
+    const photoWrapper = document.getElementById('engagementPhotoWrapper');
+    if (!photoWrapper) return;
     
-    // Add romantic particle effects
-    function createHeartParticles() {
-        const heartsContainer = document.querySelector('.floating-hearts');
-        if (!heartsContainer) return;
+    // Create sparkles
+    for (let i = 0; i < 20; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.textContent = '✨';
+        sparkle.style.position = 'absolute';
+        sparkle.style.fontSize = '1.5rem';
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.zIndex = '1000';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animation = 'sparkleAnimation 2s ease-out forwards';
         
-        setInterval(() => {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.textContent = ['💖', '💕', '💗', '💝', '🌹', '💐', '✨'][Math.floor(Math.random() * 7)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
-            heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            
-            heartsContainer.appendChild(heart);
-            
-            // Remove heart after animation
-            setTimeout(() => {
-                if (heart.parentNode) {
-                    heart.parentNode.removeChild(heart);
-                }
-            }, 8000);
-        }, 1500);
-    }
-    
-    // Add interactive hover effects to message cards
-    function addCardInteractivity() {
-        const messageCards = document.querySelectorAll('.interactive-card');
-        
-        messageCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                // Add sparkle effect
-                const sparkle = document.createElement('div');
-                sparkle.innerHTML = '✨';
-                sparkle.className = 'sparkle';
-                sparkle.style.position = 'absolute';
-                sparkle.style.top = '10px';
-                sparkle.style.left = '10px';
-                sparkle.style.fontSize = '1.5rem';
-                sparkle.style.pointerEvents = 'none';
-                
-                this.appendChild(sparkle);
-                
-                setTimeout(() => {
-                    if (sparkle.parentNode) {
-                        sparkle.parentNode.removeChild(sparkle);
-                    }
-                }, 1000);
-            });
-            
-            // Add click effect for interactive hearts
-            const clickableHearts = card.querySelectorAll('.clickable-heart');
-            clickableHearts.forEach(heart => {
-                heart.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    
-                    // Create heart explosion
-                    for (let i = 0; i < 5; i++) {
-                        setTimeout(() => {
-                            const explosionHeart = document.createElement('div');
-                            explosionHeart.innerHTML = this.textContent;
-                            explosionHeart.className = 'heart-explosion';
-                            explosionHeart.style.position = 'fixed';
-                            explosionHeart.style.left = e.clientX + 'px';
-                            explosionHeart.style.top = e.clientY + 'px';
-                            explosionHeart.style.fontSize = '1.5rem';
-                            explosionHeart.style.pointerEvents = 'none';
-                            explosionHeart.style.zIndex = '9999';
-                            explosionHeart.style.setProperty('--random-x', (Math.random() * 200 - 100) + 'px');
-                            explosionHeart.style.setProperty('--random-y', (Math.random() * 200 - 100) + 'px');
-                            
-                            document.body.appendChild(explosionHeart);
-                            
-                            setTimeout(() => {
-                                if (explosionHeart.parentNode) {
-                                    explosionHeart.parentNode.removeChild(explosionHeart);
-                                }
-                            }, 2000);
-                        }, i * 100);
-                    }
-                });
-            });
-        });
-    }
-    
-    // Special effects for romantic mode
-    function createSpecialEffects() {
-        // Create more intense heart rain
-        const romanticRain = document.querySelector('.romantic-rain');
-        if (romanticRain) {
-            romanticRain.style.animation = 'rainFall 8s linear infinite';
-        }
-        
-        // Add pulsing effect to all hearts
-        const allHearts = document.querySelectorAll('.floating-heart, .heart, .game-heart');
-        allHearts.forEach(heart => {
-            heart.style.animation += ', heartPulse 1s ease-in-out infinite';
-        });
-    }
-    
-    // Easter egg: Double click on title for special effect
-    const mainTitle = document.getElementById('mainTitle');
-    if (mainTitle) {
-        mainTitle.addEventListener('dblclick', function(e) {
-            // Create massive heart explosion
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.innerHTML = ['💖', '💕', '💗', '💝', '🌹'][Math.floor(Math.random() * 5)];
-                    heart.className = 'heart-explosion';
-                    heart.style.position = 'fixed';
-                    heart.style.left = e.clientX + 'px';
-                    heart.style.top = e.clientY + 'px';
-                    heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
-                    heart.style.pointerEvents = 'none';
-                    heart.style.zIndex = '9999';
-                    heart.style.setProperty('--random-x', (Math.random() * 400 - 200) + 'px');
-                    heart.style.setProperty('--random-y', (Math.random() * 400 - 200) + 'px');
-                    
-                    document.body.appendChild(heart);
-                    
-                    setTimeout(() => {
-                        if (heart.parentNode) {
-                            heart.parentNode.removeChild(heart);
-                        }
-                    }, 2000);
-                }, i * 50);
-            }
-        });
-    }
-    
-    // Love explosion function for buttons
-    window.showLoveExplosion = function(button) {
-        const rect = button.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        for (let i = 0; i < 15; i++) {
-            setTimeout(() => {
-                const heart = document.createElement('div');
-                heart.innerHTML = ['💖', '💕', '💗', '💝'][Math.floor(Math.random() * 4)];
-                heart.className = 'heart-explosion';
-                heart.style.position = 'fixed';
-                heart.style.left = centerX + 'px';
-                heart.style.top = centerY + 'px';
-                heart.style.fontSize = '2rem';
-                heart.style.pointerEvents = 'none';
-                heart.style.zIndex = '9999';
-                heart.style.setProperty('--random-x', (Math.random() * 300 - 150) + 'px');
-                heart.style.setProperty('--random-y', (Math.random() * 300 - 150) + 'px');
-                
-                document.body.appendChild(heart);
-                
-                setTimeout(() => {
-                    if (heart.parentNode) {
-                        heart.parentNode.removeChild(heart);
-                    }
-                }, 2000);
-            }, i * 80);
-        }
-        
-        // Change button text temporarily
-        const originalText = button.textContent;
-        button.textContent = 'مفاجأة رومانسية! 💕';
-        button.style.background = 'linear-gradient(45deg, #ff1493, #ff69b4)';
+        photoWrapper.appendChild(sparkle);
         
         setTimeout(() => {
-            button.textContent = originalText;
-            button.style.background = 'linear-gradient(45deg, #ff6b9d, #c44569)';
+            sparkle.remove();
         }, 2000);
-    };
+    }
     
-    // Add CSS animations dynamically
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes floatScore {
-            0% { transform: translateY(0px); opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Initialize interactive features after entry
-    setTimeout(() => {
-        createHeartParticles();
-        addCardInteractivity();
-    }, 2000);
-    
-    // Typing effect for beloved name on entry screen
-    function typeWriter(element, text, speed = 150) {
-        if (!element) return;
-        let i = 0;
-        element.innerHTML = '';
+    // Photo glow effect
+    const photo = document.getElementById('engagementPhoto');
+    if (photo) {
+        photo.style.filter = 'sepia(20%) saturate(1.5) brightness(1.3) contrast(1.2) hue-rotate(15deg) drop-shadow(0 0 30px rgba(255, 107, 157, 0.8))';
         
-        function type() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
+        setTimeout(() => {
+            photo.style.filter = 'sepia(20%) saturate(1.3) brightness(1.15) contrast(1.1) hue-rotate(15deg)';
+        }, 3000);
+    }
+}
+
+// Heart rain effect
+function createHeartRain() {
+    const hearts = ['💖', '💕', '💗', '💝', '🌹', '💐'];
+    
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.position = 'fixed';
+            heart.style.top = '-50px';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = '2rem';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '1000';
+            heart.style.animation = 'rainFall 4s linear forwards';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }, i * 100);
+    }
+}
+
+// Show blessings
+function showBlessings() {
+    const blessings = [
+        'بارك الله لكما وبارك عليكما 🤲',
+        'ألف مبروك الخطوبة السعيدة 💍',
+        'ربنا يتمم على خير 🌹',
+        'عقبال الفرح الكبير 💐',
+        'الله يسعدكم ويبارك لكم 💖'
+    ];
+    
+    blessings.forEach((blessing, index) => {
+        setTimeout(() => {
+            const blessingEl = document.createElement('div');
+            blessingEl.textContent = blessing;
+            blessingEl.style.position = 'fixed';
+            blessingEl.style.top = '50%';
+            blessingEl.style.left = '50%';
+            blessingEl.style.transform = 'translate(-50%, -50%)';
+            blessingEl.style.fontSize = '1.5rem';
+            blessingEl.style.color = 'white';
+            blessingEl.style.background = 'rgba(255, 107, 157, 0.9)';
+            blessingEl.style.padding = '20px 30px';
+            blessingEl.style.borderRadius = '25px';
+            blessingEl.style.zIndex = '2000';
+            blessingEl.style.textAlign = 'center';
+            blessingEl.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+            blessingEl.style.animation = 'fadeInOut 3s ease-in-out forwards';
+            
+            document.body.appendChild(blessingEl);
+            
+            setTimeout(() => {
+                blessingEl.remove();
+            }, 3000);
+        }, index * 3500);
+    });
+}
+
+// Love explosion effect
+function showLoveExplosion(button) {
+    const hearts = ['💖', '💕', '💗', '💝', '🌹', '💐', '✨'];
+    
+    for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.position = 'absolute';
+        heart.style.fontSize = '2rem';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        
+        const rect = button.getBoundingClientRect();
+        heart.style.left = rect.left + rect.width / 2 + 'px';
+        heart.style.top = rect.top + rect.height / 2 + 'px';
+        
+        const angle = (i / 15) * 2 * Math.PI;
+        const distance = 100 + Math.random() * 100;
+        const endX = rect.left + rect.width / 2 + Math.cos(angle) * distance;
+        const endY = rect.top + rect.height / 2 + Math.sin(angle) * distance;
+        
+        heart.style.animation = `explodeHeart 2s ease-out forwards`;
+        heart.style.setProperty('--endX', endX + 'px');
+        heart.style.setProperty('--endY', endY + 'px');
+        
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.remove();
+        }, 2000);
+    }
+}
+
+// Romantic mode toggle
+function toggleRomanticMode() {
+    const body = document.body;
+    const isRomanticMode = body.classList.contains('romantic-mode');
+    
+    if (isRomanticMode) {
+        body.classList.remove('romantic-mode');
+        document.getElementById('romanticMode').textContent = '✨ وضع رومانسي خاص';
+    } else {
+        body.classList.add('romantic-mode');
+        document.getElementById('romanticMode').textContent = '✨ إيقاف الوضع الرومانسي';
+        
+        // Add extra romantic effects
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                createFloatingHeart();
+            }, i * 100);
         }
-        type();
+    }
+}
+
+// Add CSS animations dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes sparkleAnimation {
+        0% { transform: scale(0) rotate(0deg); opacity: 1; }
+        50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        100% { transform: scale(0) rotate(360deg); opacity: 0; }
     }
     
-    // Start typing effect for name
-    const typingName = document.getElementById('typingName');
-    if (typingName) {
-        setTimeout(() => {
-            typeWriter(typingName, 'آية عبد المولى');
-        }, 1000);
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
     }
-});
+    
+    @keyframes explodeHeart {
+        0% { transform: translate(0, 0) scale(1); opacity: 1; }
+        100% { transform: translate(var(--endX, 0), var(--endY, 0)) scale(0); opacity: 0; }
+    }
+    
+    @keyframes titleShimmer {
+        0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+        50% { text-shadow: 2px 2px 20px rgba(255, 107, 157, 0.8), 0 0 30px rgba(255, 107, 157, 0.6); }
+    }
+    
+    @keyframes frameGlow {
+        0%, 100% { opacity: 0.7; filter: blur(15px); }
+        50% { opacity: 1; filter: blur(10px); }
+    }
+    
+    @keyframes petalFloat {
+        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+        50% { transform: translateY(-15px) rotate(180deg); opacity: 1; }
+    }
+    
+    @keyframes photoHeartFloat {
+        0%, 100% { transform: translateY(0px) scale(1); }
+        50% { transform: translateY(-10px) scale(1.1); }
+    }
+    
+    @keyframes timerPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+    }
+    
+    @keyframes numberGlow {
+        0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+        100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.8); }
+    }
+    
+    @keyframes dateIconPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+    
+    @keyframes subtitleFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+    }
+    
+    @keyframes rotateHeart {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes loveFill {
+        0%, 100% { width: 100%; }
+        50% { width: 80%; }
+    }
+    
+    @keyframes heartBeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .romantic-mode {
+        animation: romanticGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes romanticGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.1) saturate(1.2); }
+    }
+`;
+
+document.head.appendChild(style);

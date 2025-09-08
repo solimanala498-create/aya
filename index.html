@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png"
+        type="image/png">
     <title>💖 لآية عبد المولى - قلب أحمد علي 💖</title>
     <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -12,9 +13,9 @@
 
 <body>
     <!-- Background Music -->
-    <audio id="backgroundMusic" loop>
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="public/assets/romantic-song.mp3" type="audio/mpeg">
         <source src="./public/assets/romantic-song.mp3" type="audio/mpeg">
-        <source src="https://www.soundjay.com/misc/sounds/romantic-music.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Entry Screen -->
@@ -35,12 +36,12 @@
                 <div class="love-animation">💕</div>
                 <h1 class="entry-title">🌹 ممنوع الدخول 🌹</h1>
                 <p class="entry-subtitle">لغير</p>
-                <h2 class="beloved-name" id="typingName">آية عبد المولى</h2>
+                <h2 class="beloved-name">آية عبد المولى</h2>
                 <p class="heart-owner">قلب أحمد علي 💖</p>
                 <div class="romantic-quote">
                     <p>"أنتِ الحب الذي يسكن قلبي والحلم الذي يملأ عيني"</p>
                 </div>
-                <button id="enterBtn" class="enter-btn">
+                <button id="enterBtn" class="enter-btn" type="button">
                     <span>ادخلي يا حبيبتي 💕</span>
                     <div class="btn-hearts">💖💕💗</div>
                 </button>
@@ -72,6 +73,86 @@
                     <p>أحبك منذ <span id="loveCounter">0</span> ثانية</p>
                 </div>
             </header>
+
+            <!-- Engagement Photo Section -->
+            <section class="engagement-section">
+                <div class="engagement-container">
+                    <div class="magical-frame">
+                        <div class="frame-glow"></div>
+                        <div class="floating-petals">
+                            <div class="petal petal-1">🌸</div>
+                            <div class="petal petal-2">🌺</div>
+                            <div class="petal petal-3">🌸</div>
+                            <div class="petal petal-4">🌺</div>
+                            <div class="petal petal-5">🌸</div>
+                            <div class="petal petal-6">🌺</div>
+                        </div>
+                        <div class="engagement-photo-wrapper" id="engagementPhotoWrapper">
+                            <img src="/images/engagement.jpg" alt="صورة الخطوبة المباركة" class="engagement-photo" id="engagementPhoto">
+                            <div class="photo-overlay">
+                                <div class="love-sparkles">
+                                    <div class="sparkle sparkle-1">✨</div>
+                                    <div class="sparkle sparkle-2">💫</div>
+                                    <div class="sparkle sparkle-3">⭐</div>
+                                    <div class="sparkle sparkle-4">✨</div>
+                                    <div class="sparkle sparkle-5">💫</div>
+                                </div>
+                                <div class="photo-hearts">
+                                    <div class="photo-heart photo-heart-1">💖</div>
+                                    <div class="photo-heart photo-heart-2">💕</div>
+                                    <div class="photo-heart photo-heart-3">💗</div>
+                                    <div class="photo-heart photo-heart-4">💝</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="engagement-caption">
+                            <h2 class="engagement-title">💍 لحظة الخطوبة المباركة 💍</h2>
+                            <p class="engagement-description">اللحظة التي تحقق فيها الحلم، وأصبحت آية عبد المولى خطيبتي الغالية</p>
+                            <div class="engagement-date">
+                                <span class="date-icon">📅</span>
+                                <span class="date-text">23 يونيو 2025 - يوم لن ينسى من أيام العمر</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Love Timer Section -->
+                    <div class="love-timer-section">
+                        <h3 class="timer-title">💕 منذ يوم الخطوبة المبارك 💕</h3>
+                        <div class="timer-container">
+                            <div class="timer-box">
+                                <div class="timer-number" id="days">0</div>
+                                <div class="timer-label">يوم</div>
+                            </div>
+                            <div class="timer-box">
+                                <div class="timer-number" id="hours">0</div>
+                                <div class="timer-label">ساعة</div>
+                            </div>
+                            <div class="timer-box">
+                                <div class="timer-number" id="minutes">0</div>
+                                <div class="timer-label">دقيقة</div>
+                            </div>
+                            <div class="timer-box">
+                                <div class="timer-number" id="seconds">0</div>
+                                <div class="timer-label">ثانية</div>
+                            </div>
+                        </div>
+                        <p class="timer-message">من السعادة والحب الذي لا ينتهي 💖</p>
+                    </div>
+
+                    <!-- Interactive Photo Controls -->
+                    <div class="photo-controls">
+                        <button class="photo-btn" id="magicBtn" onclick="createPhotoMagic()">
+                            <span>✨ سحر الحب ✨</span>
+                        </button>
+                        <button class="photo-btn" id="heartRainBtn" onclick="createHeartRain()">
+                            <span>💖 مطر القلوب 💖</span>
+                        </button>
+                        <button class="photo-btn" id="blessingsBtn" onclick="showBlessings()">
+                            <span>🤲 دعوات بالخير 🤲</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
 
             <!-- Interactive Love Messages -->
             <section class="love-messages">
@@ -123,10 +204,10 @@
                     <h3>أغنية خاصة لآية عبد المولى 🎵</h3>
                     <p>أغنية رومانسية مخصصة لك يا حبيبتي، تم تغيير كلماتها خصيصاً لتحمل اسمك الجميل</p>
                     <div class="song-lyrics">
-                        <p class="lyric-line">"آية عبد المولى يا أجمل حبيبة"</p>
-                        <p class="lyric-line">"أنتِ النور في عيني والحب في قلبي"</p>
-                        <p class="lyric-line">"آية عبد المولى يا روح الروح"</p>
-                        <p class="lyric-line">"معاك الحياة حلوة ومعاك أنا مرتاح"</p>
+                        <p class="lyric-line">"خطوة ورا خطوة بتمشيها.. دي اللحظة اللي أنا مستنيها"</p>
+                        <p class="lyric-line">"والأرض اللي بتمشي فوقيها.. مفيش قدك يا حبيبتي عليها"</p>
+                        <p class="lyric-line">"وقالوا الشعر عن آية عبد المولى وكاتبوا في سحرها دواوين"</p>
+                        <p class="lyric-line">"وأنا وآية عبد المولى بقينا لبعض في دنيتنا سوا عايشين"</p>
                     </div>
                     <div class="song-controls">
                         <button id="playPauseBtn" class="song-btn">▶️ تشغيل الأغنية</button>
@@ -160,7 +241,7 @@
         </div>
     </div>
 
-    <script src="./script.js"></script>
+    <script type="module" src="./script.js"></script>
 </body>
 
 </html>
